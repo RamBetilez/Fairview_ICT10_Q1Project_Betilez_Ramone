@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PROJECT n SKILLS TEST SKU GENERATOR</title>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <py-config>
+        [[fetch]]
+        files = ["./sku.py"]
+    </py-config>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            color: #333;
+            background-image: url(https://assets.epicurious.com/photos/54b27e739a93d64c380b00ea/1:1/w_2560%2Cc_limit/368790_fried-chicken_1x1.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        nav {
+            background: #c1121f;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav a, .brand {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto 30px;
+        }
+
+        .sku-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px #ccc;
+        }
+
+        .sku-box h2 {
+            color: #c1121f;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #c1121f;
+        }
+
+        button {
+            background: #c1121f;
+            color: white;
+            border: 0;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            width: 100%;
+        }
+
+        .output-box {
+            display: none;
+            background: #f9f9f9;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 5px solid #c1121f;
+        }
+
+        .output-box h3 {
+            color: #c1121f;
+            text-align: center;
+        }
+
+        .sku-display {
+            font-size: 28px;
+            font-weight: bold;
+            color: #c1121f;
+            text-align: center;
+            padding: 15px;
+            border: 2px dashed #c1121f;
+            background: white;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .divider {
+            border: 0;
+            border-top: 1px dashed #ccc;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 18px 20px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="brand">Ram's Chicken</div>
+
+        <div>
+            <a href="index.html">Receipt</a>
+            <a href="sku.html">SKU Generator</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="sku-box">
+
+            <h2>SKU GENERATOR</h2>
+
+            <div class="form-group">
+                <label for="category">Product Category</label>
+
+                <select id="category" class="form-control">
+                    <option value="CHK">Chicken</option>
+                    <option value="BRG">Burger</option>
+                    <option value="NUG">Nuggets</option>
+                    <option value="MEA">Meal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="productName">Product Name</label>
+
+                <input type="text"
+                       id="productName"
+                       class="form-control"
+                       placeholder="Enter product name">
+            </div>
+
+            <div class="form-group">
+                <label for="stockQty">Stock Quantity</label>
+
+                <input type="number"
+                       id="stockQty"
+                       class="form-control"
+                       placeholder="Enter stock quantity"
+                       min="0">
+            </div>
+
+            <button py-click="generate_sku">
+                Generate SKU
+            </button>
+
+            <div class="output-box" id="skuOutput">
+
+                <h3>PRODUCT SKU CODE</h3>
+
+                <div class="sku-display" id="skuResult">
+                    ------
+                </div>
+
+                <hr class="divider">
+
+                <div class="details-row">
+                    <span>Category Code:</span>
+                    <span id="skuCatCode">-</span>
+                </div>
+
+                <div class="details-row">
+                    <span>Product Code:</span>
+                    <span id="skuItemCode">-</span>
+                </div>
+
+                <div class="details-row">
+                    <span>Stock Qty Code:</span>
+                    <span id="skuQtyCode">-</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <py-script>
+from sku import generate_sku
+    </py-script>
+
+</body>
+</html>

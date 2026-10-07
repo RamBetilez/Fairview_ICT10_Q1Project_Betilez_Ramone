@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ICT PROJECT n SKILLS TEST</title>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <py-config>
+        [[fetch]]
+        files = ["./receipt.py"]
+    </py-config>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            color: #333;
+            background-image: url(https://assets.epicurious.com/photos/54b27e739a93d64c380b00ea/1:1/w_2560%2Cc_limit/368790_fried-chicken_1x1.jpg);
+            background-repeat: no-repeat;
+        }
+
+        nav {
+            background: #c1121f;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav a, .brand {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header {
+            color: #f3eded;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            margin: 0;
+        }
+
+        .header p {
+            color: #555;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto 30px;
+        }
+
+        .container h2 {
+            color: #c1121f;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .item, .receipt {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px #ccc;
+        }
+
+        .item h3 {
+            color: #c1121f;
+        }
+
+        .price {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .qty-input {
+            width: 50px;
+        }
+
+        .checkout {
+            text-align: center;
+            margin: 25px;
+        }
+
+        button {
+            background: #c1121f;
+            color: white;
+            border: 0;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .receipt {
+            border-top: 5px solid #c1121f;
+            margin-top: 30px;
+        }
+
+        .receipt h2 {
+            color: #c1121f;
+            text-align: center;
+        }
+
+        .receipt-row, .total {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        @media (max-width: 600px) {
+            .menu {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="brand">Ram's Chicken</div>
+
+        <div>
+            <a href="receipt.html">Receipt</a>
+            <a href="sku.html">SKU Generator</a>
+        </div>
+    </nav>
+
+
+    <div class="container">
+
+        <h2>Menu</h2>
+
+        <div class="menu">
+
+            <div class="item">
+                <h3>Fried Chicken</h3>
+                <div class="price">₱120.00</div>
+
+                <input type="checkbox" id="friedChicken">
+                Select
+
+                <input type="number"
+                       id="qtyFriedChicken"
+                       class="qty-input"
+                       value="1"
+                       min="1">
+            </div>
+
+            <div class="item">
+                <h3>Chicken Burger</h3>
+                <div class="price">₱150.00</div>
+
+                <input type="checkbox" id="chickenBurger">
+                Select
+
+                <input type="number"
+                       id="qtyChickenBurger"
+                       class="qty-input"
+                       value="1"
+                       min="1">
+            </div>
+
+            <div class="item">
+                <h3>Chicken Nuggets</h3>
+                <div class="price">₱180.00</div>
+
+                <input type="checkbox" id="chickenNuggets">
+                Select
+
+                <input type="number"
+                       id="qtyChickenNuggets"
+                       class="qty-input"
+                       value="1"
+                       min="1">
+            </div>
+
+            <div class="item">
+                <h3>Chicken Meal</h3>
+                <div class="price">₱210.00</div>
+
+                <input type="checkbox" id="chickenMeal">
+                Select
+
+                <input type="number"
+                       id="qtyChickenMeal"
+                       class="qty-input"
+                       value="1"
+                       min="1">
+            </div>
+
+        </div>
+
+        <div class="checkout">
+            <button py-click="generate_receipt">
+                Generate Receipt
+            </button>
+        </div>
+
+        <div class="receipt" id="receipt" style="display: none;">
+
+            <h2>RECEIPT</h2>
+
+            <p>Thank you for visiting Rams Chicken! yum yum</p>
+
+            <div id="receiptItems"></div>
+
+            <div class="total">
+                <span>Subtotal:</span>
+                <span id="subtotal"></span>
+            </div>
+
+            <div class="total">
+                <span>VAT (12%):</span>
+                <span id="vat"></span>
+            </div>
+
+            <div class="total">
+                <b>Total Amount:</b>
+                <b id="totalAmount"></b>
+            </div>
+
+        </div>
+
+    </div>
+
+    <py-script>
+from receipt import generate_receipt
+    </py-script>
+
+</body>
+</html>
